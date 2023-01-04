@@ -8,7 +8,7 @@ import com.bill.note_taking_app.domain.time.DateTimeUtil
 class SqlDelightNoteDataSource(db: NoteDatabase) : NoteDataSource {
   private val queries = db.noteQueries
 
-  override suspend fun inserteNote(note: Note) {
+  override suspend fun insertNote(note: Note) {
     queries.insertNote(
       id = note.id,
       title = note.title,
