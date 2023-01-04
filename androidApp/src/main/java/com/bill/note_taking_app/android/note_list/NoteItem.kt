@@ -38,12 +38,12 @@ fun NoteItem(
     modifier = modifier
       .clip(RoundedCornerShape(5.dp))
       .clickable { onNoteClick() }
-      .padding(16.dp)
       .background(backgroundColour)
+      .padding(start = 8.dp, end = 8.dp)
   ) {
     Row(
-      horizontalArrangement = Arrangement.SpaceBetween,
       modifier = modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceBetween,
       verticalAlignment = Alignment.CenterVertically
     ) {
       Text(

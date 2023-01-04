@@ -24,11 +24,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteListScreen(
-  viewModel: NoteListViewModel = hiltViewModel()
+  viewModel: NoteListViewModel = hiltViewModel(),
+  navController: NavController
 ) {
   val state by viewModel.state.collectAsState()
 
@@ -39,7 +41,7 @@ fun NoteListScreen(
   Scaffold(
     floatingActionButton = {
       FloatingActionButton(
-        onClick = { /*TODO*/ },
+        onClick = { navController.navigate("note_detail/-1L") },
         backgroundColor = Color.Black
       ) {
         Icon(
@@ -75,23 +77,23 @@ fun NoteListScreen(
           enter = fadeIn(),
           exit = fadeOut()
         ) {
-          Text(text = "All note", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+          Text(text = "All notes", fontWeight = FontWeight.Bold, fontSize = 30.sp)
         }
       }
 
       LazyColumn(modifier = Modifier.weight(1f)) {
         items(state.notes,
           key = {
-            it.id
+            it.id!!
           }) { note ->
           NoteItem(
             note = note,
             backgroundColour = Color(note.colourHex),
-            onNoteClick = { /*TODO*/ },
-            onDeleteClick = { viewModel.deleteNoteById(note.id) },
+            onNoteClick = { navController.navigate("note_detail/${note.id}") },
+            onDeleteClick = { viewModel.deleteNoteById(note.id!!) },
             modifier = Modifier
               .fillMaxWidth()
-              .padding(16.dp)
+              .padding(8.dp)
               .animateItemPlacement()
           )
         }
