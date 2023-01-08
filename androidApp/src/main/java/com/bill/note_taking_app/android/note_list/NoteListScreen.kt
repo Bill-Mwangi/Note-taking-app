@@ -21,10 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.bill.note_taking_app.domain.note.Note
+import com.bill.note_taking_app.domain.time.DateTimeUtil
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -92,7 +95,109 @@ fun NoteListScreen(
             onNoteClick = { navController.navigate("note_detail/${note.id}") },
             onDeleteClick = { viewModel.deleteNoteById(note.id!!) },
             modifier = Modifier
-              .fillMaxWidth()
+              .padding(8.dp)
+              .animateItemPlacement()
+          )
+        }
+      }
+    }
+  }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Preview
+@Composable
+fun NoteListPreview() {
+  val isSearchActive = true
+
+  val notes = listOf(
+    Note(
+      id = 1,
+      title = "Android Note 1",
+      content = "Sample android note",
+      colourHex = 0xffffab91,
+      created = DateTimeUtil.now()
+    ), Note(
+      id = 2,
+      title = "Android Note 2",
+      content = "Sample android note",
+      colourHex = 0xfff48fb1,
+      created = DateTimeUtil.now()
+    ), Note(
+      id = 3,
+      title = "Android Note 3",
+      content = "Sample android note",
+      colourHex = 0xff81deea,
+      created = DateTimeUtil.now()
+    ), Note(
+      id = 4,
+      title = "Android Note 4",
+      content = "Sample android note",
+      colourHex = 0xffcf94da,
+      created = DateTimeUtil.now()
+    ), Note(
+      id = 5,
+      title = "Android Note 5",
+      content = "Sample android note",
+      colourHex = 0xffe7ed9b,
+      created = DateTimeUtil.now()
+    )
+  )
+
+  Scaffold(
+    floatingActionButton = {
+      FloatingActionButton(
+        onClick = { },
+        backgroundColor = Color.Black
+      ) {
+        Icon(
+          imageVector = Icons.Default.Add,
+          contentDescription = "New note",
+          tint = Color.White
+        )
+      }
+    }) { padding ->
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(padding)
+    ) {
+      Box(
+        modifier = Modifier
+          .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+      ) {
+        HideableSearchTextField(
+          text = "Search",
+          isSearchActive = isSearchActive,
+          onTextChange = { },
+          onSearchClick = { },
+          onCloseClick = { },
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(90.dp)
+        )
+
+        this@Column.AnimatedVisibility(
+          visible = !isSearchActive,
+          enter = fadeIn(),
+          exit = fadeOut()
+        ) {
+          Text(text = "All notes", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+        }
+      }
+
+      LazyColumn(modifier = Modifier.weight(1f)) {
+        items(notes,
+          key = {
+            it.id!!
+          }) { note ->
+          NoteItem(
+            note = note,
+            backgroundColour = Color(note.colourHex),
+            onNoteClick = { },
+            onDeleteClick = { },
+            modifier = Modifier
               .padding(8.dp)
               .animateItemPlacement()
           )
